@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Metacrafters Front-End Challenge
+
+1. This project shows how to connect React front-end to Metamask
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
