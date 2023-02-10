@@ -5,6 +5,8 @@ function Button() {
   const [account, setAccount] = useState("0x00000000000000");
   const [balance, setBalance] = useState(0);
   const [buttonLabel, setButtonLabel] = useState("Connect to Wallet");
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
 
   useEffect(() => {
     if (window.ethereum) {
@@ -19,31 +21,20 @@ function Button() {
       return;
     }
 
-    window.ethereum
-      .request({ method: "eth_requestAccounts" })
-      .then((res) => accountChanged(res[0]))
-      .catch((err) => {
-        if (err.code === 4001) {
-          console.log("Please connect to Metamask.");
-        } else {
-          console.error(err);
-        }
-      });
+    await accountChanged();
   };
 
   const accountChanged = async (account) => {
-    setAccount(account);
-    try {
-      const balance = await window.ethereum.request({
-        method: "eth_getBalance",
-        params: [account.toString(), "latest"],
-      });
-
-      setBalance(ethers.utils.formatEther(balance));
-      setButtonLabel("Connected");
-    } catch (error) {
-      console.log(error);
-    }
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    const balance = await signer.getBalance();
+    setProvider(provider);
+    setSigner(signer);
+    setAccount(address);
+    setBalance(ethers.utils.formatEther(balance));
+    setButtonLabel("Connected");
   };
 
   const chainChanged = () => {
@@ -51,6 +42,8 @@ function Button() {
     setBalance(0);
     setErrorMessage("");
     setButtonLabel("Connect to Wallet");
+    setProvider(null);
+    setSigner(null);
   };
 
   return (
