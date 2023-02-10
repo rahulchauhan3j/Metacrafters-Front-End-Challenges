@@ -1,6 +1,11 @@
 # Metacrafters Front-End Challenge
 
-1. This project shows how to connect React front-end to Metamask
+1. This project shows how to connect React front-end to Metamask and a simple contract
+2. This project uses smart contract from another repository https://github.com/rahulchauhan3j/Metacrafters-Solidity-Challenges/blob/main/contracts/BankApp.sol
+3. For this application to work -
+   a) Above mentioned smart contract must be deployed in hardhat local node.
+   b) Address of BankApp contract must be stored src/contractAddress/contractAddress.json.
+   c) Abi of BankApp contract must be kept under src/abi as BankApp.json
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
